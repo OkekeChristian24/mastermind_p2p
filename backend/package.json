@@ -1,0 +1,8 @@
+{
+  "name": "Exchanger-Server",
+  "version": "1.0.0",
+  "description": "The backend server for the P2P exchange",
+  "main": "server.js",
+  "author": "Okeke Christian and Ikeogu Franklin",
+  "license": "MIT"
+}
