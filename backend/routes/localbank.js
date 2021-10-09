@@ -43,10 +43,10 @@ router.get('/view/:user_id', (req, res) => {
 });
 
 // Read Bank
-let readSql = 'SELECT * FROM localbank WHERE id = ?'
+let readOneSql = 'SELECT * FROM localbank WHERE id = ?'
 router.get('/:id', (req, res) => {
 
-    connection.query(readSql,req.params.id, (err,result,fields) => {
+    connection.query(readOneSql,req.params.id, (err,result,fields) => {
         if (error) throw error;
         res.send(result);
       });

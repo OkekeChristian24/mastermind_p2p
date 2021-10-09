@@ -1,30 +1,20 @@
-const passport = require('passport');
-const passportLocal = require('passport-local').Strategy;
 
-// Find user by email
-const findUserByEmail = (email) => {
-    const user = '';
-    return user;
-}
+const checkLoggedIn = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect("/login");
+    }
+    next();
+};
 
-// Compare password
-const comparePassword = () => {
-    // 
-}
+const checkLoggedOut = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return res.redirect("/");
+    }
+    next();
+};
 
-// Setup Passport Local Strategy
-const initPassportLocal = () => {
-    passport.use(new passportLocal({
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback: true
-    }, 
-    async (req, email, password, done) => {
-        
-        try {
-            //
-        } catch (error) {
-            // 
-        }
-    }));
-}
+
+module.exports = {
+    checkLoggedIn: checkLoggedIn,
+    checkLoggedOut: checkLoggedOut
+};
