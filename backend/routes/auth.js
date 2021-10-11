@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 const auth = require('../middlewares/auth');
 const initPassportLocal = require('../controllers/passportLocalController');
+const registerController = require('../controllers/registerController');
 const authValidation = require('../validations/authValidation');
 
 // Initiate all passport
@@ -11,7 +12,7 @@ initPassportLocal();
 
 // Register a new user
 router.get('/register', auth.checkLoggedOut);
-router.post('/register', authValidation.validateRegister);
+router.post('/register', authValidation.validateRegister, registerController.createNewUser);
 
 // Login a user
 router.get('/login', auth.checkLoggedOut);
