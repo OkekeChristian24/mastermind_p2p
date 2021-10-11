@@ -1,22 +1,31 @@
-const { check } = require("express-validator");
+const { body } = require("express-validator");
 
 const validateRegister = [
-    check("email", "Invalid email").isEmail().trim(),
+    body("email", "Invalid email")
+     .exists({checkFalsy: true}).withMessage("Please enter an email")
+     .isEmail()
+     .normalizeEmail(),
 
-    check("password", "Invalid password. Password must be at least 4 chars long")
-    .isLength({ min: 4 }),
+     body("password", "Invalid password. Password must be at least 4 chars long")
+     .exists({checkFalsy: true}).withMessage("Please enter a password")
+     .isLength({ min: 4 }),
 
-    check("passwordConfirmation", "Password confirmation does not match password")
-    .custom((value, { req }) => {
-        return value === req.body.password
-    })
+     body("passwordConfirmation")
+     .exists({checkFalsy: true}).withMessage("Please confirm your password")
+     .custom((value, { req }) => {
+         if (value !== req.body.password) {
+            throw new Error('Password confirmation is incorrect');
+         }
+     })
 ];
 
 const validateLogin = [
-    check("email", "Invalid email").isEmail().trim(),
+    body("email", "Invalid email")
+     .exists({checkFalsy: true}).withMessage("Please enter an email")
+     .isEmail().trim(),
 
-    check("password", "Invalid password")
-    .not().isEmpty()
+     body("password", "Please enter a password")
+     .not().isEmpty()
 ];
 
 module.exports = {

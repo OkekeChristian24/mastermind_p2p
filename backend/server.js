@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 const connectFlash = require('connect-flash');
+const {sessionStore} = require('./config/db');
 
 const app = express();
 
@@ -22,8 +23,10 @@ app.use(express.json());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
+    store: sessionStore,
     cookie: {
+        secure: process.env.ENV === 'PRODUCTION',
         maxAge: 1000 * 60 * 60 * 24 // 86400000 1 day
     }
 }));

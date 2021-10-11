@@ -1,4 +1,4 @@
-const DBConnection = require("../config/db");
+const { pool } = require("../config/db");
 const bcrypt = require("bcrypt");
 
 const handleLogin = (email, password) => {
@@ -24,16 +24,24 @@ const handleLogin = (email, password) => {
 const findUserByEmail = (email) => {
     return new Promise((resolve, reject) => {
         try {
-            DBConnection.query(
-                ' SELECT * FROM `users` WHERE `email` = ?  ', email,
-                function(err, rows) {
-                    if (err) {
-                        reject(err)
-                    }
-                    let user = rows[0];
-                    resolve(user);
+            pool.getConnection((err, connection) => {
+                
+                if (err) {
+                    reject(false)
                 }
-            );
+
+                connection.query(
+                    ' SELECT * FROM `users` WHERE `email` = ?  ', email,
+                    function(error, rows) {
+                        if (error) {
+                            reject(error)
+                        }
+                        let user = rows[0];
+                        resolve(user);
+                    }
+                );
+            });
+            
         } catch (err) {
             reject(err);
         }

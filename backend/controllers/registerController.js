@@ -5,8 +5,8 @@ const validator = require("express-validator");
 const createNewUser = async (req, res) => {
     
     //validate required fields
-    let errorsArr = [];
-    let validationErrors = validator.validationResult(req);
+    const errorsArr = [];
+    const validationErrors = validator.validationResult(req);
     if (!validationErrors.isEmpty()) {
         let errors = Object.values(validationErrors.mapped());
         errors.forEach((item) => {
@@ -32,5 +32,5 @@ const createNewUser = async (req, res) => {
 
 
 module.exports = {
-    createNewUser: createNewUser
+    createNewUser
 };
