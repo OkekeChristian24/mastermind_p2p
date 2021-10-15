@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const connection = require('../config/db');
+const auth = require('../middlewares/auth');
+const adValidation = require('../validations/advertValidation');
+
 
 
 
 // Create Ads
-router.post('/create', (req, res) => {
-  connection.connect();
+router.get('/create', auth.checkLoggedIn);
+
+router.post('/create', adValidation.validateCreate, (req, res) => {
   
   const adverts = req.body;
 
