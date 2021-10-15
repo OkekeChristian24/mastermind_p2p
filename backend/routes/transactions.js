@@ -1,13 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const connection = require('../config/db');
+//const connection = require('../config/db');
+const { CreateTxn, ViewTxn, ViewTxns, CloseTxn, Deletetxn} = require("../controllers/transactionsController");
 
-connection.connect((err) => {
-    if(err){
-        throw err;
-    }
-    console.log("Database connected...")
-})
 
 //Create Table
 //id,creator_id,crypto_id,seller_id,buyer_id,
@@ -25,59 +20,74 @@ router.get('/createTable', (req, res) => {
       });
 });
 
+//    Routes
+// Create transaction
+router.post('/create', CreateTxn);
+// View all  transaction
+// Lists every transaction created by a user
+router.get('/creator', ViewTxns);
+
+// View details of a particular transaction
+router.get('/creator/:id',ViewTxn);
+
+// Close a transaction
+router.put('/close/:id', CloseTxn);
+// Delete transactions data
+router.delete('/delete/:id',DeleteTxn);
+
 
 // Create txn
-let createTxnSql = "INSERT INTO transactions SET ?"
-router.post('/createtxn', (req, res) => {
-    const transaction_data = req.body
+// let createTxnSql = "INSERT INTO transactions SET ?"
+// router.post('/createtxn', (req, res) => {
+//     const transaction_data = req.body
 
-    // Entries ought to be validated
-
-
-    connection.query(createTxnSql,[transaction_data], (err,result) => {
-        if (error) throw error;
-        res.send(result);
-      });
-});
+//     // Entries ought to be validated
 
 
-// Read Bank
-router.get('/:id', (req, res) => {
-    connection.query('SELECT * FROM transactions WHERE id = ?',[req.params.id], (err,result) => {
-        if (error) throw error;
-        res.send(result);
-      });
-});
+//     connection.query(createTxnSql,[transaction_data], (err,result) => {
+//         if (error) throw error;
+//         res.send(result);
+//       });
+// });
 
 
+// // Read Bank
+// router.get('/:id', (req, res) => {
+//     connection.query('SELECT * FROM transactions WHERE id = ?',[req.params.id], (err,result) => {
+//         if (error) throw error;
+//         res.send(result);
+//       });
+// });
 
 
 
 
-//Close Transaction
-router.put('/close/:id', (req, res) => {
+
+
+// //Close Transaction
+// router.put('/close/:id', (req, res) => {
 
   
-    // Validate the entries
+//     // Validate the entries
   
-    // Update the data in the database
-    connection.query('UPDATE transactions SET close = 1 WHERE id = ?', req.params.id, (error, results, fields) => {
-      if (error) throw error;
-      res.send("success");
-    });
+//     // Update the data in the database
+//     connection.query('UPDATE transactions SET close = 1 WHERE id = ?', req.params.id, (error, results, fields) => {
+//       if (error) throw error;
+//       res.send("success");
+//     });
     
     
-  });
+//   });
 
-// Delete/Cancel Bank
-router.delete('/delete/:id', (req, res) => {
+// // Delete/Cancel Bank
+// router.delete('/delete/:id', (req, res) => {
 
-    // Make sure its the transaction creator
+//     // Make sure its the transaction creator
 
-    connection.query('DELETE FROM transactions WHERE id = ?;SET cancelled = 1',[req.params.id], (err,result,fields) => {
-        if (error) throw error;
-        res.send("Deleted Successfully...");
-      });
-});
+//     connection.query('DELETE FROM transactions WHERE id = ?;SET cancelled = 1',[req.params.id], (err,result,fields) => {
+//         if (error) throw error;
+//         res.send("Deleted Successfully...");
+//       });
+// });
 
 module.exports = router;

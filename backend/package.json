@@ -24,6 +24,8 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.13"
+    "@sendgrid/mail": "^7.4.7",
+    "nodemon": "^2.0.13",
+    "twilio": "^3.69.0"
   }
 }
